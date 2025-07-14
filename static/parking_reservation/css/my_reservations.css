@@ -1,0 +1,83 @@
+/* ===================== layout ===================== */
+.my_reservations_main_container {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 20px;
+    height: 820px;
+}
+
+.month_picker_container {
+    height: 55px;
+}
+
+.my_reservations_container {
+    overflow-y:auto;
+    max-height: 600px;
+    width: 830px;
+    margin: 20px 0 50px;
+    font-size: 20px;
+}
+
+.total_fee_container {
+    height: 55px;
+    font-size: 24px;
+}
+
+
+/* ===================== base ===================== */
+/* ====== table ====== */
+table {
+    border-collapse:  collapse;
+    background-color: #ffffff;
+}
+
+th,td {
+    height: 40px;
+    padding: 8px;
+    width: 200px;
+    text-align: center;
+}
+
+th {
+    background-color: var(--color-main);
+    color: #ffffff;
+}
+
+td {
+    border-bottom: solid 1px #d3d3d3;  
+}
+
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;  /* 必須：下の行に隠れないように */
+}
+
+
+/* ====== button ====== */
+.my_reservations_container button {
+    padding: 0;
+    width: 70px;
+    height: 30px;
+    font-size: 16px;
+}
+
+
+/* ===================== components ===================== */
+/* ====== table ====== */
+.th45 {
+    width: 200px;
+}
+
+.td4 {
+    width: 100px;
+}
+
+.td5 {
+    width: 100px;
+    padding: 8px 40px 8px 0px;
+}
+
+
+

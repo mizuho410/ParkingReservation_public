@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'parking_reservation/css/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="signup_container">
+        <div class="form_area container-default">
+            <h1>駐車場予約システム</h1>
+            <h2>ユーザー新規登録</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="error_message">
+                    {% if form.non_field_errors %}
+                        <p>{{ form.non_field_errors }}</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="id_last_name">姓</label>
+                    <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:'' }}" required>
+                    <div class="error_message">{{ form.last_name.errors }}</div>
+                </div>
+                <div>
+                    <label for="id_first_name">名</label>
+                    <input type="text" name="first_name" id="id_first_name"  value="{{ form.first_name.value|default:'' }}" required>
+                    <div class="error_message">{{ form.first_name.errors }}</div>       
+                </div>
+                <div>
+                    <label for="id_department">部署</label>
+                    <select name="department" id="id_department">
+                        {% for dept in form.department.field.queryset %}
+                            <option value="{{ dept.id }}" {% if form.department.value and form.department.value|add:0 == dept.id %}selected{% endif %}>
+                                {{ dept.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div class="error_message">{{ form.department.errors }}</div>  
+                </div>
+                <div>
+                    <label for="id_email">メールアドレス</label>
+                    <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required>
+                    <div class="error_message">{{ form.email.errors }}</div> 
+                </div>
+                <div>
+                    <label for="id_password1">パスワード</label>
+                    <input type="password" name="password1" id="id_password1" value="{{ form.password1.value|default:'' }}" required>
+                    <div class="password_rule">半角英数字、8文字以上</div>
+                    <div class="error_message">{{ form.password1.errors }}</div>
+                </div>
+                <div>
+                    <label for="id_password2">パスワード（確認）</label>
+                    <input type="password" name="password2" id="id_password2" value="{{ form.password2.value|default:'' }}" required>
+                    <div class="error_message">{{ form.password2.errors }}</div>
+                </div>
+                <div class="submitBtn">
+                    <button type="submit">登録</button>
+                </div>
+            </form>
+            <div class="other_option">
+                <p>
+                    <a href="{% url 'login' %}">ログイン画面に戻る</a>
+                </p>
+            </div>
+        </div>  
+    </div>
+{% endblock content %}

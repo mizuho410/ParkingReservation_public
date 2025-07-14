@@ -1,0 +1,73 @@
+/* ===================== layout ===================== */
+.login_container {
+    display: flex;
+    height: 1080px;
+}
+
+.form_area {
+    width: 700px;
+    height: 600px;
+    padding: 40px;
+    margin: auto;
+}
+
+/* ===================== base ===================== */
+/* ====== headings ====== */
+h1 {
+    text-align: center;
+}
+
+/* ====== button ====== */
+button {
+    width: 180px;
+}
+
+form {
+    width: 500px;
+    margin: auto;
+}
+
+form div {
+    line-height: 1.4;
+    margin-bottom: 25px;
+    /* margin-bottom: 30px; */
+}
+
+form div label {
+    margin-left: 5px;
+}
+
+
+/* ===================== components ===================== */
+.submitBtn {    
+    margin: 50px auto;
+    text-align: center;
+}
+
+.other_option {
+    margin: 30px auto;
+    text-align: center;
+}
+
+.other_option p {
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.messages_area {
+    color: #275417;
+    background-color: #ffffff;
+    height: 50px;
+    text-align: center;
+    font-size: 30px;
+    padding: 10px;
+}
+
+.error_message {
+    color: red;
+    font-size: 18px;
+    margin: 20px auto;
+    width: 600px;
+    height: 30px;
+    text-align: center;
+}

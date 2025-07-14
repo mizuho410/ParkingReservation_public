@@ -1,0 +1,105 @@
+/* 全画面共通のCSS */
+
+/* ===================== variables (tokens) ===================== */
+/* ===== カラー変数 ===== */
+:root {
+  --color-main: #2e8b57;
+  --color-hover: #3cb371;
+  --color-container-border: #d3d3d3;
+}
+
+
+/* ===================== base ===================== */
+body {
+    font-family: 'Inter', 'Noto Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    font-size: 16px;
+    color: #333;
+    height: 100%;
+    margin: 0;
+    background-color: #d4d9dc;
+}
+
+/* ====== headings ====== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--color-main);
+}
+
+h1 {
+    font-size: 36px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+/* ====== button ====== */
+button {
+    text-align: center;
+    background-color: var(--color-main);
+    border-radius: 20px;
+    color: #ffffff;
+    padding: 5px;
+}
+
+button:hover {
+    background-color: var(--color-hover);
+}
+
+button:disabled {
+    background-color: #cccccc;
+}
+
+/* ====== a ====== */
+a {
+    color: var(--color-main);
+}
+
+a:hover {
+    color: var(--color-hover);
+}
+
+
+/* ====== input ====== */
+input[type="text"], select,input[type="email"], input[type="password"], input[type="number"], input[type="date"] {
+    border: 1px solid var(--color-main);
+    background-color: #ffffff;
+    width: 100%;
+    margin-top: 5px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+:is(input[type="text"], select, input[type="email"], input[type="password"]):focus {
+    border: 1px solid var(--color-main);
+    box-shadow: 0 0 0 1px var(--color-main); /* 疑似的に2pxに見せる */
+    outline: none; 
+}
+
+input[type="month"] {
+    border-bottom: 1px solid var(--color-main);
+    padding: 0px 10px;
+    width: 250px;
+    height: 45px;
+    font-size: 30px;
+}
+
+input[type="month"]:focus {
+    outline: none;
+    border-bottom: 2px solid var(--color-main); 
+}
+
+/* ===================== components ===================== */
+.container-default {
+    background-color: #ffffff;
+    border: 2px solid var(--color-container-border);
+    border-radius: 10px;
+    padding: 5px 20px;
+}
+
+
+

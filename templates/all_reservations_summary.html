@@ -1,0 +1,101 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'parking_reservation/css/all_reservations_summary.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-default all_reservations_summary_container">
+  <!-- フィルタフォーム -->
+  <div class="search_container">
+    <form method="get">
+      <label for="department">部署を選択:</label>
+      <select name="department" id="department" onchange="this.form.submit()">
+          <option value="">すべて</option>
+          {% for dept in departments %}
+          <option value="{{ dept.id }}" {% if dept.id|stringformat:"s" == selected_department_id %}selected{% endif %}>
+              {{ dept.name }}
+          </option>
+          {% endfor %}
+      </select>
+      <label for="keyword">名前で検索:</label>
+      <input type="text" name="keyword" id="keyword" value="{{ keyword }}">
+      <button type="submit">検索</button>  
+    </form>
+  </div>
+
+  <!-- 従業員一覧 -->
+  <div class="employee_list">
+    {% if employees %}
+      <table border="1">
+        <tr>
+          <th>名前</th>
+          <th>メール</th>
+          <th>所属部署</th>
+        </tr>
+        {% for emp in employees %}
+        <tr>
+          <td>
+            <!-- リンクで選択した従業員の予約を表示 -->
+            <a href="?department={{ selected_department_id }}&keyword={{ keyword }}&selected_user_id={{ emp.email.id }}">
+              {{ emp.email.get_full_name }}
+            </a>
+          </td>
+          <td>{{ emp.email.email }}</td>
+          <td>{{ emp.department }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% elif selected_department_id %}
+      <p>この部署には従業員が登録されていません。</p>
+    {% endif %}
+  </div>
+
+  <div class="parking-data-wrapper">  
+    <!-- 表示月の指定 -->
+    {% if selected_user %}
+      <div class="month_picker_container">
+          <form method="get">
+              <input type="hidden" name="department" value="{{ selected_department_id }}">
+              <input type="hidden" name="keyword" value="{{ keyword }}">
+              <input type="hidden" name="selected_user_id" value="{{ selected_user.id }}">
+              <input type="month" name="month" id="month_picker" value="{{ selected_month }}">
+              <button type="submit">表示</button>
+          </form>
+      </div>
+        <!-- 選択した従業員の予約一覧 -->
+        {% if reservations %}
+          <div class="reservation_and_total">
+            <div class="reservation_list"> 
+                <table border="1">
+                    <tr>
+                    <th>駐車場No.</th>
+                    <th>予約日</th>
+                    <th>予約時間帯</th>
+                    </tr>
+                    {% for r in reservations %}
+                    <tr>
+                    <td>{{ r.parking_no }}</td>
+                    <td>{{ r.date|date:"Y/n/j" }}</td>
+                    <td>{{ r.day_division }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div> 
+            <!-- 駐車場料金表示 -->
+            <div class="total_fee_container">
+                <p id="total_fee">
+                    今月の駐車場料金：{{ total_fee }}円
+                </p>
+            </div>
+          </div>
+        {% else %}
+              <p id="message">この月の予約はありません</p>
+        {% endif %}
+    {% else %}
+          <p id="message">名前を選択してください</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

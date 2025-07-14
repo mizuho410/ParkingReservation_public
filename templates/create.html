@@ -1,0 +1,139 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+{% block extra_css %}
+   <link rel="stylesheet" href="{% static 'parking_reservation/css/create.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-default create_container">
+    <div class="container-default all_form">
+        <div class="form_and_layout_wrapper">
+            <form method="post" action="{% url 'create' %}" id="reservation_form" class="container-default create_form">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="error">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+                <div>
+                    <label for="parking_no">駐車場No.</label>
+                    <input type="number" id="parking_no" name="parking_no" value="{{ form.parking_no.value|default_if_none:'' }}" required />
+                </div>
+                <div>
+                    <p>予約タイプ</p>
+                    <div class="custom_radio_group">
+                        <label for="single_day" class="custom_radio">
+                            <input type="radio" id="single_day" name="reservation_type" value="single"
+                                {% if form.data.reservation_type == "single" %} checked
+                                {% elif not form.data and form.initial.reservation_type == "single" %} checked 
+                                {% endif %}>
+                            <span class="radio_mark"></span>
+                            単日
+                        </label>
+                        <label for="multi_day" class="custom_radio">
+                            <input type="radio" id="multi_day" name="reservation_type" value="multi" 
+                                {% if form.data.reservation_type == "multi" %} checked
+                                {% elif not form.data and form.initial.reservation_type == "multi" %} checked
+                                {% endif %}>
+                            <span class="radio_mark"></span>
+                            連日
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label for="start_date">予約開始日</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ form.start_date.value|default_if_none:'' }}" required/>
+                </div>
+                <div>
+                    <label for="end_date">予約終了日</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ form.end_date.value|default_if_none:'' }}" disabled/>
+                </div>
+                <div>
+                    <label for="day_division">予約時間帯</label>
+                    <select id="day_division" name="day_division" {% if form.reservation_type.value == 'multi' %}disabled{% endif %}>
+                        <option value="AM" {% if form.day_division.value == 'AM' %}selected{% endif %}>AM</option>
+                        <option value="PM" {% if form.day_division.value == 'PM' %}selected{% endif %}>PM</option>
+                        <option value="終日" {% if form.day_division.value == '終日' or not form.day_division.value %}selected{% endif %}>終日</option>
+                    </select>
+                </div>
+                <!-- 非表示フィールド -->
+                <input type="hidden" id="reservation_holder" name="reservation_holder" value="{{ reservation_holder }}" >
+                <div class="submitBtn">
+                    <button type="submit">登録</button>
+                </div>
+            </form>
+            <!-- 駐車場レイアウト -->
+            <div class="container-default parking_layout_area">
+                <img src="{% static 'parking_reservation/images/parking_layout.png' %}"  alt="駐車場レイアウト">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded",function(){
+        const singleDayRadio = document.getElementById("single_day");
+        const multiDayRadio  = document.getElementById("multi_day");
+        const startDateField = document.getElementById("start_date");
+        const endDateField = document.getElementById("end_date");
+        const dayDivisionSelect = document.getElementById("day_division");
+
+        // ラジオボタンの選択状態に基づいて初期化
+        function updateFormState() {
+            // 予約タイプが単日の場合
+            if (singleDayRadio.checked) {
+                endDateField.disabled = true; // 予約終了日を非活性にする
+                endDateField.value = startDateField.value; // 予約終了日を予約開始日と同一にする
+                dayDivisionSelect.disabled = false; // 時間帯を活性にする
+                // 予約タイプが連日の場合
+            } else if (multiDayRadio.checked) {
+                endDateField.disabled = false; //予約終了日を活性にする
+                dayDivisionSelect.value = "終日"; // 時間帯を終日に固定する
+                dayDivisionSelect.disabled = true; // 時間帯を非活性にする
+                if (startDateField.value) {
+                    const nextDay = new Date(startDateField.value);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    endDateField.min = nextDay.toISOString().split("T")[0];
+                } else {
+                    endDateField.min = ""; // 未設定なら制限を解除
+                }
+            }
+        }
+
+        // ラジオボタン変更時にフォーム状態を更新
+        singleDayRadio.addEventListener("change", updateFormState);
+        multiDayRadio.addEventListener("change", updateFormState);
+
+        // // 予約開始日が変更された場合
+        startDateField.addEventListener("change", function () {
+            // 終了日の最小値を設定
+            if (startDateField.value) {
+                const nextDay = new Date(startDateField.value);
+                nextDay.setDate(nextDay.getDate() + 1);
+                endDateField.min = nextDay.toISOString().split("T")[0];
+            }
+            // 単日の場合は終了日を開始日と同じに設定
+            if (singleDayRadio.checked) {
+                endDateField.value = startDateField.value;
+            }
+        });
+
+        // 予約終了日が変更された場合
+        endDateField.addEventListener("change", function () {
+            // 開始日の最大値を設定
+            if (endDateField.value) {
+                startDateField.max = endDateField.value;
+            }
+        });
+
+        // フォーム送信前に予約終了日と時間帯を有効化
+        document.getElementById("reservation_form").addEventListener("submit", function () {
+            endDateField.disabled = false;
+            dayDivisionSelect.disabled = false;
+        });
+
+        // 初期表示時のフォーム状態更新
+        updateFormState();
+    });
+</script>
+{% endblock %}

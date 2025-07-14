@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'parking_reservation/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- signup完了メッセージの表示 -->
+
+{% if messages %}
+    <div class="messages_area">
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+
+<div class="login_container">
+    <div class="form_area container-default">
+        <h1>駐車場予約システム​</h1>
+        <div class="error_message">
+            {% if error_message %}
+                {{ error_message }}
+            {% endif %}
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                <label for="email">メールアドレス​</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">パスワード</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="submitBtn">
+                <button type="submit">ログイン</button>
+            </div>
+        </form>
+        <div class="other_option">
+            <p>
+                <a href="{% url 'signup' %}">アカウントをお持ちでない方</a>
+            </p>
+            <p>
+                <!-- パスワード再設定画面完成後要修正 -->
+                <!-- <a href="{% url 'signup' %}">パスワードをお忘れの方</a> -->
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

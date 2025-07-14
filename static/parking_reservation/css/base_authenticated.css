@@ -1,0 +1,91 @@
+/* ===================== layout ===================== */
+.header_area{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: var(--color-main);
+}
+
+.main_area {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: stretch;
+}
+
+/* ===================== header ===================== */
+header {
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+header form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: auto 0;
+}
+
+
+/* ===================== base ===================== */
+body {
+    width: 1440px;
+    height: 900px;
+    margin: 20px auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ===================== aside ===================== */
+aside {
+    flex-basis: 250px;
+    height: 820px;
+    margin-right: 10px;
+}
+
+aside nav ul li {
+    width: 200px;
+    margin: 10px auto;
+    padding: 5px;
+    font-size: 20px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* ===================== main content ===================== */
+main {
+    flex-basis: 1180px;
+    height: 820px;
+}
+
+
+/* ===================== base ===================== */
+/* ====== headings ====== */
+h1 {
+    text-align: left;
+    color: #ffffff;
+}
+
+
+/* ===================== components ===================== */
+.logout_button {
+    width: 150px;
+}
+
+.logout_button::before {
+    content: url(../images/logout.png);
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.active {   
+    background-color: var(--color-main);
+}
+
+.active a{
+    color: #ffffff;
+    font-weight: bold;
+}

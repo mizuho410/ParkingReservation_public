@@ -1,0 +1,158 @@
+.create_container {
+    display: flex;
+    flex-direction: column;
+    height: 820px;
+    padding: 20px;
+}
+
+.all_form{
+    background: #eff9e8;
+}
+
+.form_and_layout_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 40px;
+}
+
+/* フォームエリア */
+.create_form {
+    width: 48%;
+    padding: 30px 20px;
+    font-size: 20px;
+    background-color: #ffffff;
+    border: #ffffff;
+    box-sizing: border-box;
+}
+
+/* 駐車場レイアウトエリア */
+.parking_layout_area {
+    width: 42%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--color-hover);
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+/* 画像 */
+.parking_layout_area img {
+    width: 85%;
+    max-width: 280px;
+    height: auto;
+    display: block;
+}
+
+div {
+    margin-bottom: 20px;
+}
+
+input[type="number"],  input[type="date"] {
+    width: 70%;
+}
+
+select {
+    background: #ffffff url(../images/arrow.png) no-repeat 98% 50%/25px 25px;
+}
+
+select {
+    width: 30%;
+} 
+
+.custom_radio {
+    position: relative;
+    padding-left: 30px;
+    margin-right: 20px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.custom_radio input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.radio_mark {
+    position: absolute;
+    left: 0;
+    top: 3px;
+    height: 20px;
+    width: 20px;
+    background-color: white;
+    border: 2px solid var(--color-main);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.custom_radio input[type="radio"]:checked ~ .radio_mark {
+    background-color: var(--color-hover);
+    border-color: var(--color-hover);
+}
+
+.radio_mark::after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom_radio input[type="radio"]:checked ~ .radio_mark::after {
+    display: block;
+}
+
+.radio_mark::after {
+    top: 5px;
+    left: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}
+
+button {
+    width: 180px;
+}
+
+.submitBtn {    
+    margin: 30px auto;
+    text-align: center;
+}
+
+.other_option {
+    margin: 30px auto;
+    text-align: center;
+}
+
+.other_option p {
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin: 2px 0 0 10px;
+    width: 500px;
+    height: 20px;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  pointer-events: none; /* ← これが効かない動作を防ぐ */
+  background-color: #eee; /* 見た目で非活性がわかるように */
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+

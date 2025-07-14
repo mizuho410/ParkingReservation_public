@@ -1,0 +1,129 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'parking_reservation/css/home.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="split_container">
+    <div class="container-default split_top">
+        <!-- ウィークリー予約 -->
+        <div class="weekly_resarvation_area">
+            <div>
+
+                <div class="week_nav">
+                    <div>
+                        <a href="?display_date={{ week_dates.0|date:'Y-m-d' }}&direction=prev">≪ 前の週</a>
+                    </div>
+                    <div>
+                        <a href="?display_date={{ week_dates.0|date:'Y-m-d' }}&direction=next">次の週 ≫</a>
+                    </div>
+                </div>
+            </div>
+            <div class="weekly_resarvation">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th style="border-bottom:0px;"></th>
+                            {% regroup week_dates by year as year_list %}
+                            {% for year_group in year_list %}
+                                <th colspan="{{ year_group.list|length}}">
+                                    {{ year_group.grouper }}年
+                                </th>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th>駐車場No.</th>
+                            {% for d in week_dates %}
+                            <th>
+                                <div>
+                                    <p>{{ d|date:"n/j" }} ({{ d|date:"D" }})</p>
+                                </div>
+                            </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in reservation_list %}
+                        <tr>
+                            <td>{{ row.parking_no }}</td>
+                            {% for day in row.days %}
+                            <td>
+                                <div class="week_daydivision">
+                                    <div>
+                                        {% if day.AM == '○' %}
+                                            <a href="{% url 'create' %}?parking_no={{ row.parking_no }}&date={{ day.date|date:'Y-m-d' }}&day_division=AM">{{ day.AM }}</a>
+                                        {% else %}
+                                            {{ day.AM }}
+                                        {% endif %}
+                                    </div>
+                                    <div>/</div>
+                                    <div>
+                                        {% if day.PM == '○' %}
+                                            <a href="{% url 'create' %}?parking_no={{ row.parking_no }}&date={{ day.date|date:'Y-m-d' }}&day_division=PM">{{ day.PM }}</a>
+                                        {% else %}
+                                            {{ day.PM }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="Note">
+                <p>※表示形式：AM / PM</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="split_bottom">
+        
+        <!-- 予約リスト -->
+        <div class="container-default resarvation_list_area">
+            <h2>表示週の予約リスト</h2>
+            <div class="my_reservations_container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>駐車場No.</th>
+                            <th>予約者名</th>
+                            <th>予約日</th>
+                            <th>予約時間帯</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in object_list %}
+                        <tr>
+                            <td>{{ object.parking_no }}</td>
+                            <td>{{ object.reservation_holder }}</td>
+                            <td>{{ object.date|date:"Y/n/j" }}</td>
+                            <td>{{ object.day_division }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan='5'>Sorry, no date in this list.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="new_create">
+                <p>
+                    <a href="{% url 'create' %}">新規予約</a>
+                </p>
+            </div>
+        </div>        
+        <!-- 駐車場レイアウト -->
+        <div class="container-default parking_layout_area">
+            <img src="../static/parking_reservation/images/parking_layout.png" alt="">
+        </div>
+
+    </div>  
+</div>
+{% endblock content %}

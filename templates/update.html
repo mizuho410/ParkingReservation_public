@@ -1,0 +1,47 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+{% block extra_css %}
+   <link rel="stylesheet" href="{% static 'parking_reservation/css/update.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-default update_container">
+    <div class="container-default update_form">
+        <form method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="error">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+            <div>
+                <label class="label" for="parking_no">駐車場No.</label>
+                <!-- レイアウト図完成後に要修正 -->
+                <input type="number" id="parking_no" name="parking_no" value="{{ object.parking_no }}" required />
+            </div>
+            <div>
+                <label class="label">予約日</label>
+                <input type="date" id="date" name="date" value="{{ object.date|date:'Y-m-d' }}" required/>
+            </div>
+            <div>
+                <label class="label">予約時間帯</label>
+                <select id="day_division" name="day_division" {% if form.reservation_type.value == 'multi' %}disabled{% endif %}>
+                    <option value="AM" {% if object.day_division == "AM" %}selected{% endif %}>AM</option>
+                    <option value="PM" {% if object.day_division == "PM" %}selected{% endif %}>PM</option>
+                    <option value="終日" {% if object.day_division == "終日" %}selected{% endif %}>終日</option>
+                </select>
+            </div>
+            <!-- 非表示フィールド -->
+            <input type="hidden" id="reservation_holder" name="reservation_holder" value="{{ object.reservation_holder }}" >
+            <br>
+            <div class="submitBtn">
+                <button type="submit">更新</button>
+            </div>
+        </form>
+        <div class="other_option">
+            <a href="{% url 'my_reservations' %}">キャンセル</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

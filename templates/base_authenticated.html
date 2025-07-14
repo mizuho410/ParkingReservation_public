@@ -1,0 +1,64 @@
+<!-- ログイン後用のベーステンプレート -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>駐車場予約システム</title>
+    <!-- リセットCSS -->
+    <link rel="stylesheet" href="{% static 'parking_reservation/css/destyle.css' %}">
+    <!-- 全画面共通のCSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'parking_reservation/css/style.css' %}">
+    <!-- ログイン後画面の共通CSS-->
+    <link rel="stylesheet" href="{% static 'parking_reservation/css/base_authenticated.css' %}">
+    <!-- 各画面個別のCSS -->
+    {% block extra_css %}{% endblock %}   
+</head>
+
+<body>
+    <div>
+        <header>
+            <div class="container-default header_area">
+                <h1>駐車場予約システム</h1>
+                <form name="Logout" method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="logout_button" onclick="return confirmLogout();">ログアウト</button>
+                </form>
+            </div>
+        </header>
+        <div class="main_area">
+            <aside class="container-default">
+                <nav>
+                    <ul>
+                        <li class="{% if '/home' in request.path %}active{% endif %}">
+                            <a href="{% url 'home' %}">HOME</a>
+                        </li>
+                        <li class="{% if '/my_reservations' in request.path %}active{% endif %}">
+                            <a href="{% url 'my_reservations' %}">個人予約管理画面</a>
+                        </li>
+                        {% if request.user.employee.department.name == "総務部" %}
+                            <li class="{% if '/all_reservations_summary' in request.path %}active{% endif %}">
+                                <a href="{% url 'all_reservations_summary' %}" >駐車場利用状況管理</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </aside>
+            <main class="">
+                {% block content %}
+                {% endblock content %}
+            </main>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    function confirmLogout() {
+        return confirm("本当にログアウトしますか？");
+    }
+</script>

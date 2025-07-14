@@ -1,0 +1,158 @@
+.all_reservations_summary_container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.search_container  {
+    display: flex;
+    align-items: center;
+    height: 55px;
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 10px;
+}
+.search_container select {
+    border: 1px solid #275417;
+    background-color: #ffffff;
+    width: 25%;
+    margin: 5px 5px 0;
+    padding: 4px 8px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background: #ffffff url(../images/arrow.png) no-repeat 98% 50%/25px 25px;
+}
+.search_container input[type="text"] {
+    border: 1px solid #275417;
+    background-color: #ffffff;
+    width: 30%;
+    margin: 0 10px 0 0;
+    padding: 4px 8px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+.search_container button[type="submit"] {
+    background-color: var(--color-main);
+    color: #ffffff;
+    padding: 5px 20px;
+    border-radius: 10px;
+}
+
+.employee_list {
+    flex-basis: auto;
+    margin-top: 10px;
+    font-size: 20px;
+    height: 300px;
+    overflow-y: auto;
+}
+.employee_list table {
+  border-collapse: collapse;
+  width: 70%;
+}
+.employee_list td,th {
+    height: 40px;
+    padding: 8px;
+    width: 250px;
+}
+.employee_list td {
+    text-align: left;
+    border-bottom: solid 1px #658C6E;  
+}
+.employee_list th {
+    text-align: center;
+    position: sticky;
+    top: 0;
+    background-color: var(--color-hover);
+    color: #ffffff;
+    z-index: 10;
+}
+.employee_list a {
+  color: #275417;
+  text-decoration: underline;
+}
+.employee_list a:hover {
+  color: #103e0f;
+  text-decoration: none;
+}
+
+.parking-data-wrapper {
+    align-items: center;
+    height: 430px;
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 10px;
+}
+
+.month_picker_container  {
+    flex-basis: auto;
+    margin-top: 20px;
+    font-size: 20px;
+}
+.month_picker_container input[type="month"] {
+    border-bottom: 1px solid #275417;
+    padding: 0px 10px;
+    width: 170px;
+    height: 30px;
+    font-size: 20px;
+}
+.month_picker_container button[type="submit"] {
+    background-color: var(--color-main);
+    padding: 5px 20px;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+.reservation_and_total {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.reservation_list {
+    flex-basis: auto;
+    margin-top: 10px;
+    font-size: 20px;
+    height: 330px;
+    overflow-y: auto;
+}
+.reservation_list table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.reservation_list td,th {
+    height: 40px;
+    padding: 8px;
+    width: 250px;
+}
+.reservation_list td {
+    text-align: left;
+    border-bottom: solid 1px #658C6E;  
+}
+.reservation_list th {
+    text-align: center;
+    position: sticky;
+    top: 0;
+    background-color: var(--color-hover);
+    color: #ffffff;
+    z-index: 10;
+}
+
+.total_fee_container {
+    flex-basis: auto;
+    margin-top: 40px;
+    
+}
+
+#total_fee {
+    font-size: 25px;
+}
+
+#message {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+
+

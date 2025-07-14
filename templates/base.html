@@ -1,0 +1,25 @@
+<!-- ログイン前用のベーステンプレート -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>駐車場予約システム</title>
+    <!-- リセットCSS -->
+    <link rel="stylesheet" href="{% static 'parking_reservation/css/destyle.css' %}">
+    <!-- 全画面共通のCSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'parking_reservation/css/style.css' %}">
+    <!-- 各画面個別のCSS -->
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    {% endblock content %}
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+{% extends 'base_authenticated.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'parking_reservation/css/my_reservations.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-default my_reservations_main_container">
+    <!-- 表示月の指定 -->
+    <div class="month_picker_container">
+        <input type="month" value="" id="month_picker">
+    </div>
+    <!-- 月毎の個人予約一覧 -->
+    <div class="my_reservations_container">
+        <table>
+            <thead>
+                <tr>
+                    <th>駐車場No.</th>
+                    <th>予約日</th>
+                    <th>予約時間帯</th>
+                    <th colspan='2' class="th45"></th>
+                </tr>
+            </thead>
+            <tbody id="TableBody">
+                <!-- JavaScript でデータを追加する -->
+            </tbody>
+        </table>
+    </div>
+    <!-- 駐車場料金表示 -->
+    <div class="total_fee_container">
+        <p id="total_fee"></p>
+    </div>
+</div>
+
+<script>
+    // 現在の日付を取得
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0]; // 'YYYY-MM-DD' 形式に整形
+    // 月と年を取得し、YYYY-MM形式に変換
+    const year = today.getFullYear();
+    const month = ("0" + (today.getMonth() + 1)).slice(-2); // 月は0から始まるので+1
+
+    // 現在の月をデフォルト値として設定
+    document.addEventListener("DOMContentLoaded", function() {
+        // デフォルト値を設定
+        document.getElementById("month_picker").value = `${year}-${month}`;
+
+        // 初期表示データ取得
+        get_my_reservations();
+
+        // 月が変更されたら即時データ取得
+        document.getElementById("month_picker").addEventListener("change", get_my_reservations);
+    })
+
+    // 予約一覧データ取得・表示処理
+    function get_my_reservations() {
+        const selected_month = document.getElementById("month_picker").value; // YYYY-MM形式
+
+        // サーバーにデータをリクエスト
+        fetch(`/get_my_reservations/?month=${selected_month}`)
+            .then(response => response.json()) // JSON に変換
+            .then(data => {
+                // テーブルを更新
+                const tablebody = document.getElementById("TableBody");
+                tablebody.innerHTML = ""; // 既存データをクリア
+
+                // データがない場合
+                if (data.reservations.length === 0) {
+                    tablebody.innerHTML = "<tr><td colspan='5'>Sorry, no data in this list.</td></tr>";
+                    document.getElementById("total_fee").textContent = "今月の駐車場料金：0円";
+                    return;
+                }
+
+                // データがある場合
+                data.reservations.forEach(reservation => {
+                    const formattedDate = formatDateToJapanese(reservation.date);
+                    const csrfToken = "{{ csrf_token }}";
+                    const updateBtnId = `update_button_${reservation.id}`;
+                    const deleteBtnId = `delete_button_${reservation.id}`;
+
+                    let row = `<tr>
+                        <td>${reservation.parking_no}</td>
+                        <td>${formattedDate}</td>
+                        <td>${reservation.day_division}</td>
+                        <td class="td4">
+                            <form method="get" action="update/${reservation.id}/">
+                                <button type="submit" id="${updateBtnId}" class="button">更新</button>
+                            </form>
+                        </td>
+                        <td class="td5">
+                            <form method="post" action="delete/${reservation.id}/" onsubmit="return confirm('本当に削除しますか？');">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+                                <button type="submit" id="${deleteBtnId}" class="button">削除</button>
+                            </form>
+                        </td>
+                    </tr>`;
+
+                    tablebody.innerHTML += row;
+
+                    // 今日よりも前の日付データは更新・削除できないようにする
+                    if (reservation.date < todayStr) {
+                        const updateBtn = document.getElementById(updateBtnId);
+                        const deleteBtn = document.getElementById(deleteBtnId);
+
+                        if (updateBtn) updateBtn.disabled = true;
+                        if (deleteBtn) deleteBtn.disabled = true;
+                    }
+                });
+
+                // 料金合計を表示するエリアを更新
+                document.getElementById("total_fee").textContent = `今月の駐車場料金：${data.total_fee} 円`;
+                
+            })
+            .catch(error => console.error("データ取得エラー:", error));
+    }
+        
+
+    // 日付形式 (YYYY/MM/DD)変換
+    function formatDateToJapanese(dateStr) {
+        const formatted_date = new Date(dateStr);
+        const formatted_year = formatted_date.getFullYear();
+        const formatted_month = (formatted_date.getMonth() + 1); // 月は0始まりなので+1
+        const formatted_day = formatted_date.getDate();
+        return `${formatted_year}/${formatted_month}/${formatted_day}`;
+    }
+
+</script>
+{% endblock content %}
