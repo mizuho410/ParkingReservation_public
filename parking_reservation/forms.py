@@ -27,27 +27,7 @@ class SignupForm(BaseUserCreationForm):
 				)
 		return user
 
-# Home画面用検索フォーム
-class SearchForHomeForm(forms.Form):
-	search_parking_no = forms.IntegerField(required=False)
-	search_start_date = forms.DateField(required=False)
-	search_end_date = forms.DateField(required=False)
-	use_range = forms.BooleanField(required=False) # 期間検索ON/OFF
 
-	# データの整合性チェックに条件追加
-	def clean(self):
-		cleaned_data = super().clean()
-		search_start_date = cleaned_data.get("search_start_date")
-		search_end_date = cleaned_data.get("search_end_date")
-		use_range = cleaned_data.get("use_range")
-		
-		if use_range and (not search_end_date):
-			raise forms.ValidationError("期間検索をする場合は終了日を入力してください。")
-
-		if use_range and search_end_date and search_start_date > search_end_date:
-			raise forms.ValidationError("開始日は終了日より前にしてください。")
-
-		return cleaned_data
 
 # 登録画面用検索フォーム
 class ParkingReservationForm(forms.Form):
